@@ -1,6 +1,8 @@
 import React from "react";
 import { makeStyles, Theme, Container } from "@material-ui/core";
-import coverImage from "../../assets/welcome-card-cover.jpg";
+// import coverImage from "../../assets/welcome-card-cover.webp";
+import Image1 from "../../assets/image1.jpg";
+import Image2 from "../../assets/image2.jpg";
 import MediaCard from "../../components/MediaCard";
 import { TextField } from "@material-ui/core";
 import { useLocation, Route, Switch, useHistory } from "react-router-dom";
@@ -10,6 +12,12 @@ import {
 } from "react-transition-group";
 import routes from "../routes.enum";
 import ReadingCard from "../../components/ReadingCard";
+// import  ImagesProvider  from "../../assets/bg.svg";
+ //import  intro from "../../assets/bg.svg";
+
+
+ import { ImagesProvider } from "./contexts/ImagesContext";
+ import Intro from "./features/Intro/Intro";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -40,6 +48,10 @@ export const WelcomeCards: React.FunctionComponent = props => {
 };
 
 export default function Welcome() {
+
+
+
+
     const classes = useStyles();
     const location = useLocation();
     const history = useHistory();
@@ -48,18 +60,65 @@ export default function Welcome() {
 
     const dummyFunction = (point: string) => () => history.push(routes.WELCOME + point);
     return (
+
         <Container fixed disableGutters className={classes.root}>
+
+
+
+        <div className="fish" id="fish"></div>
+<div className="fish" id="fish2"></div>
+
+
+
+            <div className="intro" id="intro"></div>
+
             <TransitionGroup>
                 <CSSTransition
                     key={location.key}
                     classNames="fade"
                     timeout={300}
                 >
+
+
+
                     <Switch location={location}>
-                        <Route exact path={routes.WELCOME + "/"}>
+
+                    <Route
+          path="/"
+          exact
+          render={props => (
+            <ImagesProvider
+            intro={true}
+              r={require.context(
+                "./features/Intro/images/",
+                false,
+                /\.(png|jpe?g|svg)$/
+              )}
+            >
+              <Intro {...props} />
+            </ImagesProvider>
+          )} />
+
+
+
+
+                        {/* <Route exact path={routes.WELCOME + "/"}> */}
+
+                            <Route exact path={routes.WELCOME + "/"}          render={props => (
+            <ImagesProvider
+            intro={true}
+              r={require.context(
+                "./features/Intro/images/",
+                false,
+                /\.(png|jpe?g|svg)$/
+              )}
+            >
+              <Intro {...props} />
+            </ImagesProvider>
+          )}>
                             <WelcomeCards>
                                 <MediaCard
-                                    imgSrc={coverImage}
+                                    imgSrc={Image1}
                                     cardTitle="Welcome to Vani"
                                     cardContext="Hey there, lets find out you reading age. First enter your Biological Age"
                                     buttonText="Next"
@@ -87,7 +146,7 @@ export default function Welcome() {
                         <Route path={routes.WELCOME + "/2"}>
                             <WelcomeCards>
                                 <MediaCard
-                                    imgSrc={coverImage}
+                                    imgSrc={Image2}
                                     cardTitle="Let us know where you are from"
                                     cardContext="Only if you provide us your region, we can make sure you get the apt sentence to read."
                                     buttonText="Start"
